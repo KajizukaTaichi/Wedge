@@ -7,7 +7,8 @@ impl WedgeValue {
     pub fn compile(&self) -> Result<String, WedgeReport> {
         Ok(match self {
             Self::Integer(i) => format!("{i}"),
-            Self::Float(i) => format!("{i}"),
+            Self::Float(f) => format!("{f}"),
+            Self::Bool(b) => format!("{}", if *b { 1 } else { 0 }),
             _ => todo!(),
         })
     }

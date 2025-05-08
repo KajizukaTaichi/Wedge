@@ -60,6 +60,9 @@ pub enum WedgeStmt {
     },
     Mod {
         body: WedgeBlock
+    },
+    Expr {
+        val: WedgeExpr
     }
 }
 
@@ -113,7 +116,7 @@ pub enum WedgeOperator {
     Equal,
     NotEq,
     Assign,
-    AssignWith
+    AssignWith,
 }
 
 #[derive(Debug, Clone)]

@@ -1,0 +1,42 @@
+program = stmt, "\n", {stmt, "\n"};
+
+stmt = let_stmt |
+        fn_stmt |
+        class_stmt |
+        attr_stmt |
+        attr_dec |
+        struct_stmt |
+        enum_stmt |
+        imp_stmt |
+        for_stmt |
+        while_stmt |
+        break_stmt |
+        cont_stmt |
+        ret_stmt |
+        mod_expr |
+        expr;
+
+let_stmt = "let", ident, [":", ident], "=", expr;
+fn_stmt = "fn", ident, [template], "(", [ident, [":", ident], {",", ident, [":", ident]}], ")", ["->", ident], block;
+class_stmt = "class", ident, [template], ["(", ident, ")"], [dec_block];
+struct_stmt = "struct", ident, [template], "{", [ident, [":", ident], {",", ident, [":", ident]}], "}"; 
+enum_stmt = "enum", ident, "{", [ident, {",", ident}], "}";
+attr_stmt = "attr", ident, ["(", [ident, [":", ident], {",", ident, [":", ident]}, ")"]], [":", ident, {"+", ident}], [dec_block];
+attr_dec = "#[", ident, ["(", expr, {",", expr}, ")"], "]";
+if_stmt = "if", expr, block, {"elif", expr, block}, ["else", block];
+for_stmt = "for", expr, "in", expr, block;
+while_stmt = "while", expr, block;
+break_stmt = "break";
+cont_stmt = "continue";
+ret_stmt = "return", expr;
+mod_expr = "mod", dec_block;
+
+template = "<", ident, [":", ident], {",", ident, [":", ident]}, ">";
+dec_block = "{", [fn_stmt | let_stmt, "\n", {fn_stmt | let_stmt, "\n"}], "}";
+block = "{", [stmt, "\n", {fn_stmt | let_stmt, "\n"}], "}";
+
+expr = ? expr ?;
+
+array = "[", [expr, {",", expr}], "]";
+variable = ident, {"::" | ".", ident};
+call = variable, ["<", ident, {",", ident}, ">"], "(", [expr, {",", expr}], ")";

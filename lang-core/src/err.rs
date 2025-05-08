@@ -1,16 +1,22 @@
 #[derive(Debug)]
-pub struct WedgeReport<'a> {
+pub struct WedgeReport {
     pub kind: WedgeErrKind,
     pub msg: Option<String>,
-    pub file: &'a str,
-    pub line: u32
+    pub file: String,
+    pub line: u32,
 }
 
-impl<'a> std::fmt::Display for WedgeReport<'a> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl std::fmt::Display for WedgeReport {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match &self.msg {
-            Some(val) => write!(f, "{}: {}\n{}[{}]", self.kind.to_string(), val, self.file, self.line),
-            None => write!(f, "{}: {}[{}]", self.kind.to_string(), self.file, self.line)
+            Some(val) => write!(
+                f,
+                "{}: {val}\n{}[{}]",
+                self.kind.to_string(),
+                self.file,
+                self.line
+            ),
+            None => write!(f, "{}: {}[{}]", self.kind.to_string(), self.file, self.line),
         }
     }
 }
@@ -19,5 +25,5 @@ impl<'a> std::fmt::Display for WedgeReport<'a> {
 pub enum WedgeErrKind {
     LexicalError,
     ParseError,
-    InternalError
+    InternalError,
 }
